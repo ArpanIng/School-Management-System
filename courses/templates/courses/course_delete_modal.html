@@ -1,0 +1,43 @@
+<div
+  class="modal fade"
+  id="courseDelete-{{ course.id }}"
+  data-bs-backdrop="static"
+  data-bs-keyboard="false"
+  tabindex="-1"
+  aria-labelledby="courseDeleteLabel-{{course.id}}"
+  aria-hidden="true"
+>
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h1
+          class="modal-title fs-5"
+          id="courseDeleteLabel-{{ course.id }}"
+        >
+          Delete course
+        </h1>
+        <button
+          type="button"
+          class="btn-close"
+          data-bs-dismiss="modal"
+          aria-label="Close"
+        ></button>
+      </div>
+      <div class="modal-body">
+        Are you sure you want to delete the course "<span class="fw-bold">{{ course.name }}</span>"?
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+          No
+        </button>
+        <form
+          action="{% url 'courses:course_delete' course.id %}"
+          method="post"
+        >
+          {% csrf_token %}
+          <button type="submit" class="btn btn-primary">Yes</button>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,62 @@
+<aside id="sidebar" class="sidebar">
+  <ul class="sidebar-nav" id="sidebar-nav">
+    <li class="nav-item">
+      <a class="nav-link" href="#">
+        <i class="bi bi-grid"></i>
+        <span>Dashboard</span>
+      </a>
+    </li>
+
+    <li class="nav-item">
+      <a class="nav-link collapsed" data-bs-target="#users-nav" data-bs-toggle="collapse" href="#">
+        <i class="bi bi-people"></i><span>Users</span><i class="bi bi-chevron-down ms-auto"></i>
+      </a>
+      <ul id="users-nav" class="nav-content collapse " data-bs-parent="#sidebar-nav">
+        <li>
+          <a href="{% url 'user_list' %}">
+            <i class="bi bi-circle"></i><span>View users</span>
+          </a>
+        </li>
+      </ul>
+    </li><!-- End Users Nav -->
+
+    <li class="nav-item">
+      <a class="nav-link collapsed" data-bs-target="#departments-nav" data-bs-toggle="collapse" href="#">
+        <i class="bi bi-menu-button-wide"></i><span>Departments</span><i class="bi bi-chevron-down ms-auto"></i>
+      </a>
+      <ul id="departments-nav" class="nav-content collapse " data-bs-parent="#sidebar-nav">
+        <li>
+          <a href="{% url 'courses:department_list' %}">
+            <i class="bi bi-circle"></i><span>View departments</span>
+          </a>
+        </li>
+      </ul>
+    </li><!-- End Departments Nav -->
+
+    <li class="nav-item">
+      <a class="nav-link collapsed" data-bs-target="#instructor-nav" data-bs-toggle="collapse" href="#">
+        <i class="bi bi-people"></i><span>Instructor</span><i class="bi bi-chevron-down ms-auto"></i>
+      </a>
+      <ul id="instructor-nav" class="nav-content collapse " data-bs-parent="#sidebar-nav">
+        <li>
+          <a href="{% url 'instructor-list' %}">
+            <i class="bi bi-circle"></i><span>View instructor</span>
+          </a>
+        </li>
+      </ul>
+    </li><!-- End Instructor Nav -->
+
+    <li class="nav-item">
+      <a class="nav-link collapsed" data-bs-target="#courses-nav" data-bs-toggle="collapse" href="#">
+        <i class="bi bi-book"></i><span>Courses</span><i class="bi bi-chevron-down ms-auto"></i>
+      </a>
+      <ul id="courses-nav" class="nav-content collapse " data-bs-parent="#sidebar-nav">
+        <li>
+          <a href="{% url 'courses:course_list' %}">
+            <i class="bi bi-circle"></i><span>View courses</span>
+          </a>
+        </li>
+      </ul>
+    </li><!-- End Courses Nav -->
+  </ul>
+</aside>

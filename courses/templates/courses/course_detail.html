@@ -1,0 +1,96 @@
+{% extends "academics/base_admin.html" %}
+{% load group_extras %}
+
+{% block content %}
+<main id="main" class="main">
+  <section class="section profile">
+    <div class="row">
+
+      <div class="col-xl-10">
+        <div class="card">
+          <h5 class="card-header">Course detail</h5>
+          <div class="card-body pt-3">
+            <div>
+              <div class="border-bottom border-3">
+                <h2>Instructor</h2>
+              </div>
+              <div>
+                <table class="table">
+                  <thead>
+                    <tr>
+                      <th></th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      {% if course.instructor %}
+                      <td class="d-flex">
+                        <div class="ps-2 py-2">
+                          <img src="{{ course.instructor.profile.avatar.url }}" alt="Profile" class="rounded-circle me-2" style="width: 32px; height: 32px;">
+                          <span class="text-muted">{{ course.instructor.get_instructor_full_name }}</span>
+                        </div>
+                      </td>
+                      {% else %}
+                      <td
+                        colspan="1"
+                        class="text-center py-4 text-muted fs-2"
+                      >
+                        No instructor assigned yet.
+                      </td>
+                      {% endif %}
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+            <!-- enrolled students -->
+            <div class="mt-4">
+              <div class="d-flex justify-content-between align-items-end border-bottom border-3">
+                <h2>
+                  {% if request.user|has_group:'Student' %}
+                  Classmates
+                  {% else %}
+                  Enrolled students
+                  {% endif %}
+                </h2>
+                {{is_enrolled}}
+                <p class="text-muted">{{ enrolled_students_count }} Student{{ enrolled_students_count|pluralize }}</p>
+              </div>
+              <div>
+                <table class="table">
+                  <thead>
+                    <tr>
+                      <th></th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {% for enrollment in enrolled_students %}
+                    <tr>
+                      <td class="d-flex">
+                        <div class="ps-2 py-2">
+                          <img src="{{ enrollment.profile.avatar.url }}" alt="Profile" class="rounded-circle me-2" style="width: 32px; height: 32px;">
+                          <span class="text-muted">{{ enrollment.get_student_full_name }}</span>
+                        </div>
+                      </td>
+                    </tr>
+                    {% empty %}
+                    <tr>
+                      <td
+                        colspan="1"
+                        class="text-center py-4 text-muted fs-2"
+                      >
+                        No students enrolled yet.
+                      </td>
+                    </tr>
+                    {% endfor %}
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+</main>
+{% endblock content %}

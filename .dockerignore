@@ -1,0 +1,41 @@
+# Ignore the virtual environment directory
+/.venv
+
+# Ignore Poetry-specific files and directories
+.poetry
+
+# Ignore Python cache files
+__pycache__
+*.pyc
+*.pyo
+*.pyd
+
+# Ignore Django-specific files
+*.log
+*.sqlite3
+
+# Ignore local environment files
+.env
+.env.*
+
+# Ignore Docker and related files
+Dockerfile
+docker-compose.yml
+.dockerignore
+
+# Ignore version control directories
+.git
+.gitignore
+
+# Ignore various IDE/editor files
+.vscode
+.idea
+*.swp
+*.swo
+*.sublime-workspace
+*.sublime-project
+
+# Ignore other irrelevant files and directories
+*.md
+*.rst
+node_modules

@@ -1,0 +1,57 @@
+{% extends "table_layout_instructor.html" %}
+
+{% block page_title %}Semesters{% endblock page_title %}
+
+{% block table_actions %}
+{% comment %} {% include 'table_actions.html' with add_url=semester_create_url %} {% endcomment %}
+{% endblock table_actions %}
+
+{% block table_content %}
+<div class="table-responsive">
+  <table class="table caption-top">
+    <caption>{{ total_attendances }} attendance{{ total_attendances|pluralize }}</caption>
+    <thead class="table-light">
+      <tr class="text-capitalize">
+        <th scope="col">ID</th>
+        <th scope="col">course</th>
+        <th scope="col">student</th>
+        <th scope="col">Attendance date</th>
+        <th scope="col">Status</th>
+        <th scope="col">Remarks</th>
+        <th scope="col"></th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for attendance in attendances %}
+      <tr>
+        <th scope="row">{{ attendance.id }}</th>
+        <td>{{ attendance.course }}</td>
+        <td>{{ attendance.student }}</td>
+        <td>{{ attendance.attendance_date }}</td>
+        <td>{{ attendance.status }}</td>
+        <td>{{ attendance.remarks }}</td>
+        <td class="py-1">
+          <div class="d-flex justify-content-end">
+            <a href="#" class="btn btn-secondary me-2">
+              <i class="bi bi-eye"></i>
+            </a>
+            <a
+              href="#"
+              class="btn btn-primary me-2"
+              >
+              <i class="bi bi-pencil-square"></i>
+            </a>
+          </div>
+        </td>
+      </tr>
+      {% empty %}
+      <tr>
+        <td colspan="7" class="text-center py-4 text-muted fs-2">
+          No attendances available.
+        </td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
+{% endblock table_content %}

@@ -1,0 +1,92 @@
+{% extends "table_layout.html" %}
+{% load status_extras %}
+
+{% block page_title %}Classes{% endblock page_title %}
+
+{% comment %} {% block table_actions %}
+{% include 'table_actions.html' with add_url=class_create_url %}
+{% endblock table_actions %} {% endcomment %}
+
+
+
+{% block table_content %}
+<div class="card-body">
+  <form method="get" class="row mb-4">
+    {% for field in filter.form %}
+    <div class="col-auto">
+      {{ field }}
+    </div>
+    {% endfor %}
+  <div class="col-auto">
+    <button type="submit" class="btn btn-primary">Filter</button>
+  </div>
+</form>
+</div>
+
+
+
+
+<div class="table-responsive">
+  <table class="table table-striped caption-top">
+    <caption>{{ total_classes }} class{{ total_classes|pluralize }}</caption>
+    <thead>
+      <tr class="text-capitalize">
+        <th scope="col">#</th>
+        <th scope="col">ID</th>
+        <th scope="col">Section</th>
+        <th scope="col">Course</th>
+        <th scope="col">Semester</th>
+        <th scope="col">Class Instructor</th>
+        <th scope="col">Max students</th>
+        <th scope="col">Is active</th>
+        <th scope="col"></th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for class in classes %}
+      <tr>
+        <th scope="row">{{ forloop.counter }}</th>
+        <th scope="row">{{ class.id }}</th>
+        <td>{{ class.section }}</td>
+        <td>{{ class.course.name }}</td>
+        <td>{{ class.semester }}</td>
+        <td>
+          {% if class.class_instructor %}
+          {{ class.get_class_instructor_full_name }}
+          {% else %}
+          None
+          {% endif %}
+        </td>
+        <td>{{ class.max_students }}</td>
+        <td>{% status_icon class.is_active %}</td>
+        <td class="py-1">
+          <div class="d-flex justify-content-end">
+            <a href="{{ class.get_absolute_url }}" class="btn btn-secondary me-2">
+              <i class="bi bi-eye"></i>
+            </a>
+            <a
+              href="{% url 'courses:class_update' class.id %}"
+              class="btn btn-primary me-2"
+              >
+              <i class="bi bi-pencil-square"></i>
+            </a>
+            <a
+              href="{% url 'courses:class_instructor_assign' class.id %}"
+              class="btn btn-primary me-2"
+              >
+              Assign instructor
+            </a>
+          </div>
+        </td>
+      </tr>
+      {% empty %}
+      <tr>
+        <td colspan="8" class="text-center py-4 text-muted fs-2">
+          No classes available.
+        </td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
+{% endblock table_content %}

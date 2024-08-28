@@ -1,0 +1,104 @@
+{% extends "table_layout_instructor.html" %}
+
+{% block page_title %}
+  Update Attendance for {{ selected_class }}
+{% endblock page_title %}
+
+{% block table_content %}
+<form action="" method="post">
+  {% csrf_token %}
+  <div class="mb-3">
+    <label for="attendance_date" class="form-label">Select Attendance Date</label>
+    <input
+      type="date"
+      class="form-control"
+      id="attendance_date"
+      name="attendance_date"
+      value="{{ formatted_date }}"
+    />
+  </div>
+  <table class="table caption-top">
+    <thead class="table-light">
+      <tr class="text-capitalize">
+        <th scope="col">#</th>
+        <th scope="col">student id</th>
+        <th scope="col">student</th>
+        <th scope="col">Status</th>
+        <th scope="col">Remarks</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for student in enrolled_students %}
+        {% for key, attendance_value in attendance_dict.items %}
+        {% if key == student.student_id %}
+        <tr>
+          <th scope="row">{{ forloop.counter }}</th>
+          <td>{{ student.student_id }}</td>
+          <td>{{ student.get_student_full_name }}</td>
+          <td>
+            {% if student.student_id in attendance_dict %}
+            {% with attendance=attendance_dict.student_id %}
+            <div class="form-check form-check-inline">
+              <input
+                class="form-check-input"
+                type="radio"
+                name="attendance_{{ student.student_id }}"
+                id="present_{{ student.student_id }}"
+                value="PRE"
+                required
+                {% if attendance_value.status == 'PRE' %}
+                checked
+                {% endif %}
+              />
+              <label class="form-check-label" for="present_{{ student.student_id }}">
+                Present
+              </label>
+            </div>
+            <div class="form-check form-check-inline">
+              <input
+                class="form-check-input"
+                type="radio"
+                name="attendance_{{ student.student_id }}"
+                id="absent_{{ student.student_id }}"
+                value="ABS"
+                required
+                {% if attendance_value.status == 'ABS' %}
+                checked
+                {% endif %}
+              />
+              <label class="form-check-label" for="absent_{{ student.student_id }}">
+                Absent
+              </label>
+            </div>
+            {% endwith %}
+            {% endif %}
+          </td>
+          <td>
+            <div>
+              <input
+                type="text"
+                class="form-control"
+                name="remarks_{{ student.student_id }}"
+                value="{{attendance_value.remarks}}"
+              />
+            </div>
+          </td>
+        </tr>
+        {% endif %}
+        {% empty %}
+        <tr>
+          <td colspan="5" class="text-center py-4 text-muted fs-2">
+            You haven't taken attendance on today yet.
+          </td>
+        </tr>
+        {% endfor %}
+      {% endfor %}
+    </tbody>
+  </table>
+  {% if attendance_dict|length > 0 %}
+  <div class="d-flex justify-content-end me-2">
+    <button type="submit" class="btn btn-primary">Update attendance</button>
+  </div>
+  {% endif %}
+</form>
+{% endblock table_content %}

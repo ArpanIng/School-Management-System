@@ -1,0 +1,69 @@
+{% extends "table_layout.html" %}
+{% load status_extras %}
+
+{% block page_title %}Departments{% endblock page_title %}
+
+{% block table_actions %}
+{% include 'table_actions.html' with add_url=department_create_url %}
+{% endblock table_actions %}
+
+{% block table_content %}
+<div class="table-responsive">
+  <table class="table table-striped caption-top">
+    <caption>
+      {{ total_departments }} department{{ total_departments|pluralize }}
+    </caption>
+    <thead>
+      <tr class="text-capitalize">
+        <th scope="col">ID</th>
+        <th scope="col">Code</th>
+        <th scope="col">Name</th>
+        <th scope="col">Head of department</th>
+        <th scope="col">Description</th>
+        <th scope="col"></th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for department in departments %}
+      <tr>
+        <th scope="row">{{ department.id }}</th>
+        <td>{{ department.code }}</td>
+        <td>{{ department.name }}</td>
+        <td>{{ department.head_of_department }}</td>
+        <td>{{ department.description }}</td>
+        <td class="py-1">
+          <div class="d-flex justify-content-end">
+            <a href="#" class="btn btn-secondary me-2">
+              <i class="bi bi-eye"></i>
+            </a>
+            <a
+              href="{% url 'academics:department_update' department.id %}"
+              class="btn btn-primary me-2"
+              >
+              <i class="bi bi-pencil-square"></i>
+            </a>
+            <!-- Button trigger department delete modal -->
+            <a
+              href="{% url 'academics:department_delete' department.id %}"
+              class="btn btn-danger"
+              data-bs-toggle="modal"
+              data-bs-target="#departmentDelete-{{ department.id }}"
+            >
+            <i class="bi bi-trash"></i>
+            </a>
+            <!-- Modal -->
+            {% include 'academics/departments/department_delete_modal.html' %}
+          </div>
+        </td>
+      </tr>
+      {% empty %}
+      <tr>
+        <td colspan="6" class="text-center py-4 text-muted fs-2">
+          No departments available.
+        </td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
+{% endblock table_content %}

@@ -1,0 +1,30 @@
+[tool.poetry]
+name = "student management system"
+version = "0.1.0"
+description = ""
+authors = ["arpan <ingnamarpan@gmail.com>"]
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.12"
+django = ">=4.2,<5.0"
+psycopg2-binary = "^2.9.9"
+pillow = "^10.4.0"
+crispy-bootstrap5 = "^2024.2"
+django-filter = "^24.3"
+
+
+[tool.poetry.group.dev.dependencies]
+django-extensions = "^3.2.3"
+ipython = "^8.26.0"
+ruff = "^0.5.6"
+django-debug-toolbar = "^4.4.6"
+coverage = "^7.6.1"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
+
+[tool.pytest.ini_options]
+DJANGO_SETTINGS_MODULE = "config.settings"
+python_files = ["test_*.py"]

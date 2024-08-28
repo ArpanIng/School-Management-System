@@ -1,0 +1,63 @@
+{% extends "table_layout.html" %}
+{% load status_extras %}
+
+{% block page_title %}Semesters{% endblock page_title %}
+
+{% block table_actions %}
+{% include 'table_actions.html' with add_url=semester_create_url %}
+{% endblock table_actions %}
+
+{% block table_content %}
+<div class="table-responsive">
+  <table class="table table-striped caption-top">
+    <caption>{{ total_semesters }} semester{{ total_semesters|pluralize }}</caption>
+    <thead>
+      <tr class="text-capitalize">
+        <th scope="col">ID</th>
+        <th scope="col">Name</th>
+        <th scope="col">Start date</th>
+        <th scope="col">End date</th>
+        <th scope="col">Academic year</th>
+        <th scope="col">Status</th>
+        <th scope="col"></th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for semester in semesters %}
+      <tr>
+        <th scope="row">{{ semester.id }}</th>
+        <td>{{ semester.get_name_display }}</td>
+        <td>{{ semester.start_date }}</td>
+        <td>{{ semester.end_date }}</td>
+        <td>{{ semester.academic_year }}</td>
+        <td>
+          <span
+            class="{{ semester.status|semester_status_badge }}"
+            >{{ semester.get_status_display }}
+          </span>
+        </td>
+        <td class="py-1">
+          <div class="d-flex justify-content-end">
+            <a href="#" class="btn btn-secondary me-2">
+              <i class="bi bi-eye"></i>
+            </a>
+            <a
+              href="{% url 'academics:semester_update' semester.id %}"
+              class="btn btn-primary me-2"
+              >
+              <i class="bi bi-pencil-square"></i>
+            </a>
+          </div>
+        </td>
+      </tr>
+      {% empty %}
+      <tr>
+        <td colspan="6" class="text-center py-4 text-muted fs-2">
+          No semesters available.
+        </td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
+{% endblock table_content %}

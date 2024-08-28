@@ -1,0 +1,98 @@
+{% extends "academics/base_admin.html" %}
+{% load status_extras %}
+
+{% block content %}
+<main id="main" class="main">
+  <section class="section">
+    <div class="row">
+      <div class="col-lg-12">
+        <div class="card">
+          <div class="card-body">
+            <h5 class="card-title">Users</h5>
+            {% include 'partials/messages.html' %}
+            <div class="d-flex justify-content-between mb-3">
+              <form class="d-flex">
+                <input
+                  type="text"
+                  class="form-control"
+                  placeholder="Search..."
+                />
+              </form>
+              <a
+                href="{% url 'user_create' %}"
+                class="btn btn-primary"
+              >
+                <i class="bi bi-plus-lg"></i>
+                <span>Add</span>
+              </a>
+            </div>
+
+            <div class="table-responsive">
+              <table class="table table-striped caption-top">
+                <caption>{{ user_count }} user{{ user_count|pluralize }}</caption>
+                <thead>
+                  <tr class="text-capitalize">
+                    <th scope="col">#</th>
+                    <th scope="col">ID</th>
+                    <th scope="col">First name</th>
+                    <th scope="col">Last name</th>
+                    <th scope="col">Username</th>
+                    <th scope="col">Email</th>
+                    <th scope="col">Is active</th>
+                    <th scope="col">Is Staff</th>
+                    <th scope="col">Is Superuser</th>
+                    <th scope="col">Date joined</th>
+                    <th scope="col">Last login</th>
+                    <th scope="col"></th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {% for user in users %}
+                  <tr>
+                    <th scope="row">{{ forloop.counter }}</th>
+                    <td>{{ user.id }}</td>
+                    <td>{{ user.first_name }}</td>
+                    <td>{{ user.last_name }}</td>
+                    <td>{{ user.username }}</td>
+                    <td>{{ user.email }}</td>
+                    <td>
+                      {% status_icon user.is_active %}
+                    </td>
+                    <td>
+                      {% status_icon user.is_staff %}
+                    </td>
+                    <td>
+                      {% status_icon user.is_superuser %}
+                    </td>
+                    <td>{{ user.date_joined }}</td>
+                    <td>{{ user.last_login }}</td>
+                    <td class="py-1">
+                      <div class="d-flex justify-content-end">
+                        <a
+                          href="{% url 'user_update' user.id %}"
+                          class="btn btn-primary me-2"
+                          >Edit</a
+                        >
+                      </div>
+                    </td>
+                  </tr>
+                  {% empty %}
+                  <tr>
+                    <td
+                      colspan="12"
+                      class="text-center py-4 text-muted fs-2"
+                    >
+                      No users available.
+                    </td>
+                  </tr>
+                  {% endfor %}
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+</main>
+{% endblock content %}

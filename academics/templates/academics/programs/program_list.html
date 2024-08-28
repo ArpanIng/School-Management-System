@@ -1,0 +1,79 @@
+{% extends "table_layout.html" %}
+{% load status_extras %}
+
+{% block page_title %}Programs{% endblock page_title %}
+
+{% block table_actions %}
+{% include 'table_actions.html' with add_url=program_create_url %}
+{% endblock table_actions %}
+
+{% block table_content %}
+<div class="table-responsive">
+  <table class="table table-striped caption-top">
+    <caption>
+      {{ total_programs }} progam{{ total_programs|pluralize }}
+    </caption>
+    <thead>
+      <tr class="text-capitalize">
+        <th scope="col">ID</th>
+        <th scope="col">Code</th>
+        <th scope="col">Name</th>
+        <th scope="col">Department</th>
+        <th scope="col">Duration years</th>
+        <th scope="col">Degree type</th>
+        <th scope="col">Total credits</th>
+        <th scope="col">Created at</th>
+        <th scope="col">Is active</th>
+        <th scope="col"></th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for program in programs %}
+      <tr>
+        <th scope="row">{{ program.id }}</th>
+        <td>{{ program.code }}</td>
+        <td>{{ program.name }}</td>
+        <td>{{ program.department }}</td>
+        <td>{{ program.duration_years }}</td>
+        <td>{{ program.get_degree_type_display }}</td>
+        <td>{{ program.total_credits }}</td>
+        <td>{{ program.created_at|date:'d-m-Y, g:i a' }}</td>
+        <td>
+          {% status_icon program.is_active %}
+        </td>
+        <td class="py-1">
+          <div class="d-flex justify-content-end">
+            <a href="#" class="btn btn-secondary me-2">
+              <i class="bi bi-eye"></i>
+            </a>
+            <a
+              href="{% url 'academics:program_update' program.slug %}"
+              class="btn btn-primary me-2"
+              >
+              <i class="bi bi-pencil-square"></i>
+            </a>
+            <!-- Button trigger department delete modal -->
+            <a
+              href="{% url 'academics:program_delete' program.id %}"
+              class="btn btn-danger"
+              data-bs-toggle="modal"
+              data-bs-target="#programDelete-{{ program.id }}"
+            >
+            <i class="bi bi-trash"></i>
+            </a>
+            <!-- Modal -->
+            {% include 'academics/programs/program_delete_modal.html' %}
+          </div>
+        </td>
+      </tr>
+      {% empty %}
+      <tr>
+        <td colspan="10" class="text-center py-4 text-muted fs-2">
+          No programs available.
+        </td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
+{% endblock table_content %}

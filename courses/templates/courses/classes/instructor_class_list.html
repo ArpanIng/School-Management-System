@@ -1,0 +1,53 @@
+{% extends "table_layout_instructor.html" %}
+
+{% block page_title %}My classes{% endblock page_title %}
+
+{% block table_content %}
+{{ instructor.profile.instructor }}
+<div class="table-responsive">
+  <table class="table caption-top">
+    <caption>{{ total_classes }} assigned class{{ total_classes|pluralize }}</caption>
+    <thead class="table-light">
+      <tr class="text-capitalize">
+        <th scope="col">ID</th>
+        <th scope="col">Section</th>
+        <th scope="col">Course</th>
+        <th scope="col">Semester</th>
+        <th scope="col"></th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for class in classes %}
+      <tr>
+        <th scope="row">{{ class.id }}</th>
+        <td>{{ class.section }}</td>
+        <td>{{ class.course }}</td>
+        <td>{{ class.semester }}</td>
+        <td class="py-1">
+          <div class="d-flex justify-content-end">
+            <a href="{{ class.get_absolute_url }}" class="btn btn-secondary me-2">
+              <i class="bi bi-eye"></i>
+            </a>
+            <a href="{% url 'courses:class_take_attendance' class.id %}" class="btn btn-primary me-2">
+              Take attendance
+            </a>
+            <a href="{% url 'courses:class_update_attendance' class.id %}" class="btn btn-primary me-2">
+              Update attendance
+            </a>
+            <a href="{% url 'courses:class_attendance_list' class.id %}" class="btn btn-primary">
+              View attendances
+            </a>
+          </div>
+        </td>
+      </tr>
+      {% empty %}
+      <tr>
+        <td colspan="5" class="text-center py-4 text-muted fs-2">
+          You haven't assigned to any classes yet.
+        </td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
+{% endblock table_content %}

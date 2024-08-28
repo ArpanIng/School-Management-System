@@ -1,0 +1,76 @@
+{% extends "base.html" %}
+
+{% block sidebar %}
+{% include 'academics/partials/sidebar_student.html' %}
+{% endblock sidebar %}
+
+{% block content %}
+<main id="main" class="main">
+  <section class="section">
+    <div class="row">
+      <div class="col-lg-12">
+        <div class="card">
+          <div class="card-body">
+            <h5 class="card-title">Academic Records</h5>
+            <div class="d-flex justify-content-between mb-3">
+              <form class="d-flex">
+                <input
+                  type="text"
+                  class="form-control"
+                  placeholder="Search..."
+                />
+              </form>
+            </div>
+
+            <div class="table-responsive">
+              <table class="table table-striped">
+                <thead>
+                  <tr>
+                    <th scope="col">Semester</th>
+                    <th scope="col">Course</th>
+                    <th scope="col">Code</th> <!--redirect to course enrollment page-->
+                    <th scope="col">Credit Hours</th>
+                    <th scope="col">Status</th>
+                    <th scope="col">Grade</th>
+                    <th scope="col">Grading Point</th>
+                    <th scope="col">Released</th>
+                    <th scope="col">Barred</th>
+                    <th scope="col">Attendance (%)</th>
+                    <th scope="col">Absent (%)</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {% for course in courses %}
+                  <tr>
+                    <td>lorem</td>
+                    <td>lorem</td>
+                    <td>lorem</td>
+                    <td>lorem</td>
+                    <td>lorem</td>
+                    <td>lorem</td>
+                    <td>lorem</td>
+                    <td>lorem</td>
+                    <td>lorem</td>
+                    <td>lorem</td>
+                    <td>lorem</td>
+                  </tr>
+                  {% empty %}
+                  <tr>
+                    <td
+                      colspan="11"
+                      class="text-center py-4 text-muted fs-2"
+                    >
+                      No academic records available.
+                    </td>
+                  </tr>
+                  {% endfor %}
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+</main>
+{% endblock content %}

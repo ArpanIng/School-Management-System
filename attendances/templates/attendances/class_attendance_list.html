@@ -1,0 +1,71 @@
+{% extends "table_layout_instructor.html" %}
+{% load crispy_forms_tags %}
+{% load status_extras %}
+
+{% block page_title %}Attendance for {% endblock page_title %}
+
+{% block table_actions %}
+<form method="get" class="row mb-4">
+    {% for field in filter.form %}
+    <div class="col-auto">
+      {{ field }}
+    </div>
+    {% endfor %}
+  <div class="col-auto">
+    <button type="submit" class="btn btn-primary">Filter</button>
+  </div>
+</form>
+{% comment %} {% include 'table_actions.html' with add_url=semester_create_url %} {% endcomment %}
+{% endblock table_actions %}
+
+{% block table_content %}
+<div class="table-responsive">
+  <table class="table table-bordered">
+    <thead>
+      <tr class="text-capitalize">
+        <th>Day</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for day in days %}
+      <tr>
+          <td>{{ day }}</td>
+      </tr>
+  {% endfor %}
+    </tbody>
+  </table>
+</div>
+{% comment %} <div class="table-responsive">
+  <table class="table table-striped">
+    <thead>
+      <tr class="text-capitalize">
+        <th scope="col">ID</th>
+        <th scope="col">student</th>
+        <th scope="col">Status</th>
+        <th scope="col">Remarks</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for attendance in attendances %}
+      <tr>
+        <th scope="row">{{ attendance.id }}</th>
+        <td>{{ attendance.student.get_student_full_name }}</td>
+        <td>
+          <span
+            class="{{ attendance.status|attendance_status_badge }}"
+            >{{ attendance.get_status_display }}
+          </span>
+        </td>
+        <td>{{ attendance.remarks }}</td>
+      </tr>
+      {% empty %}
+      <tr>
+        <td colspan="4" class="text-center py-4 text-muted fs-2">
+          No class attendances available.
+        </td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div> {% endcomment %}
+{% endblock table_content %}

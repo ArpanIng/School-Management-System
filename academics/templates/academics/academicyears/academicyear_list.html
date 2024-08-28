@@ -1,0 +1,55 @@
+{% extends "table_layout.html" %}
+
+{% block page_title %}Academic years{% endblock page_title %}
+
+{% block table_actions %}
+{% include 'table_actions.html' with add_url=academicyear_create_url %}
+{% endblock table_actions %}
+
+{% block table_content %}
+<div class="table-responsive">
+  <table class="table table-striped caption-top">
+    <caption>
+      {{ total_academicyears }} academic year{{ total_academicyears|pluralize }}
+    </caption>
+    <thead>
+      <tr class="text-capitalize">
+        <th scope="col">ID</th>
+        <th scope="col">Year</th>
+        <th scope="col">Start date</th>
+        <th scope="col">End date</th>
+        <th scope="col"></th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for academicyear in academicyears %}
+      <tr>
+        <th scope="row">{{ academicyear.id }}</th>
+        <td>{{ academicyear.year }}</td>
+        <td>{{ academicyear.start_date }}</td>
+        <td>{{ academicyear.end_date }}</td>
+        <td class="py-1">
+          <div class="d-flex justify-content-end">
+            <a href="#" class="btn btn-secondary me-2">
+              <i class="bi bi-eye"></i>
+            </a>
+            <a
+              href="#"
+              class="btn btn-primary me-2"
+              >
+              <i class="bi bi-pencil-square"></i>
+            </a>
+          </div>
+        </td>
+      </tr>
+      {% empty %}
+      <tr>
+        <td colspan="5" class="text-center py-4 text-muted fs-2">
+          No academic years available.
+        </td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
+{% endblock table_content %}

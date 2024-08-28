@@ -1,0 +1,63 @@
+{% extends "table_layout.html" %}
+{% load status_extras %}
+{% load crispy_forms_tags %}
+
+{% block page_title %}Enrollments{% endblock page_title %}
+
+{% block table_actions %}
+{% include 'table_actions.html' with add_url=enrollment_create_url %}
+{% endblock table_actions %}
+
+{% block table_content %}
+<div class="table-responsive">
+  <table class="table table-striped caption-top">
+    <caption>
+      {{ total_enrollments }} enrollment{{ total_enrollments|pluralize }}
+    </caption>
+    <thead>
+      <tr class="text-capitalize">
+        <th scope="col">ID</th>
+        <th scope="col">Student</th>
+        <th scope="col">Course</th>
+        <th scope="col">Class</th>
+        <th scope="col">Enrollment date</th>
+        <th scope="col">Status</th>
+        <th scope="col"></th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for enrollment in enrollments %}
+      <tr>
+        <th scope="row">{{ enrollment.id }}</th>
+        <td>{{ enrollment.student }}</td>
+        <td>{{ enrollment.class_instance.course.name }}</td>
+        <td>{{ enrollment.class_instance }}</td>
+        <td>{{ enrollment.enrollment_date }}</td>
+        <td>
+          <span
+            class="{{ enrollment.status|enrollment_status_badge }}"
+            >{{ enrollment.get_status_display }}
+          </span>
+        </td>
+        <td class="py-1">
+          <div class="d-flex justify-content-end">
+            <a
+              href="{% url 'courses:enrollment_update' enrollment.id %}"
+              class="btn btn-primary me-2"
+            >
+              <i class="bi bi-pencil-square"></i>
+            </a>
+          </div>
+        </td>
+      </tr>
+      {% empty %}
+      <tr>
+        <td colspan="7" class="text-center py-4 text-muted fs-2">
+          No enrollments yet.
+        </td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
+{% endblock table_content %}

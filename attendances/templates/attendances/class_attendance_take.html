@@ -1,0 +1,81 @@
+{% extends "table_layout_instructor.html" %}
+
+{% block page_title %}
+  Take Attendance for {{ selected_class.section }}
+{% endblock page_title %}
+
+{% block table_content %}
+<form action="" method="post">
+  {% csrf_token %}
+  <div class="mb-3">
+    <label for="attendance_date" class="form-label">Select Attendance Date</label>
+    <input
+      type="date"
+      class="form-control"
+      id="attendance_date"
+      name="attendance_date"
+      value="{{ formatted_date }}"
+    />
+  </div>
+  <table class="table caption-top">
+    <thead class="table-light">
+      <tr class="text-capitalize">
+        <th scope="col">#</th>
+        <th scope="col">student id</th>
+        <th scope="col">student</th>
+        <th scope="col">Status</th>
+        <th scope="col">Remarks</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for student in enrolled_students %}
+        <tr>
+          <th scope="row">{{ forloop.counter }}</th>
+          <td>{{ student.student_id }}</td>
+          <td>{{ student.get_student_full_name }}</td>
+          <td>
+            <div class="form-check form-check-inline">
+              <input
+                class="form-check-input"
+                type="radio"
+                name="attendance_{{ student.student_id }}"
+                id="present_{{ student.student_id }}"
+                value="PRE"
+                required
+              />
+              <label class="form-check-label" for="present_{{ student.student_id }}">
+                Present
+              </label>
+            </div>
+            <div class="form-check form-check-inline">
+              <input
+                class="form-check-input"
+                type="radio"
+                name="attendance_{{ student.student_id }}"
+                id="absent_{{ student.student_id }}"
+                value="ABS"
+                required
+              />
+              <label class="form-check-label" for="absent_{{ student.student_id }}">
+                Absent
+              </label>
+            </div>
+          </td>
+          <td>
+            <div>
+              <input
+                type="text"
+                class="form-control"
+                name="remarks_{{ student.student_id }}"
+              />
+            </div>
+          </td>
+        </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+  <div class="d-flex justify-content-end me-2">
+    <button type="submit" class="btn btn-primary">Submit attendance</button>
+  </div>
+</form>
+{% endblock table_content %}

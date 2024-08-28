@@ -1,0 +1,80 @@
+{% extends "table_layout.html" %}
+{% load status_extras %}
+
+{% block page_filters %}
+{% include 'partials/_filter_card.html' with filter_form=filter_form %}
+{% endblock page_filters %}
+
+{% block page_title %}Courses{% endblock page_title %}
+
+{% block table_actions %}
+{% include 'table_actions.html' with add_url=course_create_url %}
+{% endblock table_actions %}
+
+{% block table_content %}
+<div class="table-responsive">
+  <table class="table table-striped caption-top">
+    <caption>{{ total_courses }} course{{ total_courses|pluralize }}</caption>
+    <thead>
+      <tr class="text-capitalize">
+        <th scope="col">ID</th>
+        <th scope="col">Code</th>
+        <th scope="col">Name</th>
+        <th scope="col">Credits</th>
+        <th scope="col">Program</th>
+        <th scope="col">Is active</th>
+        <th scope="col"></th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for course in courses %}
+      <tr>
+        <th scope="row">{{ course.id }}</th>
+        <td>{{ course.code }}</td>
+        <td>{{ course.name }}</td>
+        <td>{{ course.credits }}</td>
+        <td>{{ course.program.name }}</td>
+        <td>{% status_icon course.is_active %}</td>
+        <td class="py-1">
+          <div class="d-flex justify-content-end">
+            <a
+              class="btn btn-secondary me-2"
+              href="{{ course.get_absolute_url }}"
+            >
+              <i class="bi bi-eye"></i>
+            </a>
+            <a
+              href="{% url 'courses:course_update' course.slug %}"
+              class="btn btn-primary me-2"
+            >
+              <i class="bi bi-pencil-square"></i>
+            </a>
+            <!-- Button trigger course delete modal -->
+            <a
+              href="{% url 'courses:course_delete' course.id %}"
+              class="btn btn-danger"
+              data-bs-toggle="modal"
+              data-bs-target="#courseDelete-{{ course.id }}"
+            >
+              <i class="bi bi-trash"></i>
+            </a>
+            <!-- Modal -->
+            {% include 'courses/course_delete_modal.html' %}
+          </div>
+        </td>
+      </tr>
+      {% empty %}
+      <tr>
+        <td colspan="6" class="text-center py-4 text-muted fs-2">
+          No courses available.
+        </td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
+{% endblock table_content %}
+
+{% comment %} {% block scripts %} {% endcomment %}
+{% comment %} <script src="{% static 'courses/js/test.js' %}"></script> {% endcomment %}
+{% comment %} {% endblock scripts %} {% endcomment %}

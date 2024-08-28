@@ -1,0 +1,14 @@
+{% load crispy_forms_tags %}
+
+<div class="card">
+  <div class="card-body">
+    <h5 class="card-title">Filter by</h5>
+    <form method="get" class="row g-3">
+      {% crispy filter_form %}
+      <div class="col-12">
+        <a href="?" class="btn btn-secondary">Reset Filter</a>
+        <button type="submit" class="btn btn-primary">Filter</button>
+      </div>
+    </form>
+  </div>
+</div>

@@ -1,0 +1,31 @@
+{% extends "academics/base_admin.html" %}
+{% load crispy_forms_tags %}
+
+{% block content %}
+<main id="main" class="main">
+  <section class="section">
+    <div class="row justify-content-center">
+      <div class="col-lg-8">
+        <div class="card">
+          <div class="card-body">
+            <h5 class="card-title">
+              {% if form.instance.pk %}Edit{% else %}Add{% endif %} Department
+            </h5>
+            <form action="" method="post" class="row g-3" novalidate>
+              {% csrf_token %} {{form|crispy }}
+              <div>
+                <a
+                  href="{{ request.META.HTTP_REFERER }}"
+                  class="btn btn-secondary"
+                  >Cancel</a
+                >
+                <button type="submit" class="btn btn-primary">Save</button>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+</main>
+{% endblock content %}

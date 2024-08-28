@@ -1,0 +1,141 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block sidebar %}
+{% if user_role == 'admin' %}
+  {% include 'academics/partials/sidebar_admin.html' %}
+  {% elif user_role == 'instructor' %}
+  {% include 'academics/partials/sidebar_instructor.html' %}
+  {% elif user_role == 'student' %}
+  {% include 'academics/partials/sidebar_student.html' %}
+{% endif %}
+{% endblock sidebar %}
+
+{% block content %}
+<main id="main" class="main">
+  <section class="section profile">
+    <div class="row">
+      <div class="col-xl-10">
+        <div class="card">
+          <div
+            class="card-body profile-card pt-4 d-flex flex-column align-items-center"
+          >
+            <img
+              src="{{ profile.avatar.url }}"
+              alt="Profile"
+              class="rounded-circle"
+            />
+            <h2>{{ profile.user.get_full_name }}</h2>
+            hey {{user_role}}
+          </div>
+        </div>
+      </div>
+
+
+      <div class="col-xl-10">
+        <div class="card">
+          <div class="card-header bg-secondary text-white fw-bold bg-opacity-50">Profile</div>
+
+          <div class="card-body pt-3">
+            <div class="row mx-2">
+              <div class="col py-2">
+                <div class="fw-light text-muted text-muted">Username</div>
+                <div>{{ profile.user.username }}</div>
+              </div>
+              <div class="col py-2">
+                {% if user_role == 'student' %}
+                <div class="fw-light text-muted">Student Number</div>
+                <div>{{ profile.student.student_id }}</div>
+                {% else %}
+                <div class="fw-light text-muted">Employee Number</div>
+                <div>{{ profile.instructor.employee_id }}</div>
+                {% endif %}
+              </div>
+            </div>
+            <div class="row mx-2">
+              <div class="col py-2">
+                <div class="fw-light text-muted">Email</div>
+                <div>{{ profile.user.email }}</div>
+              </div>
+              <div class="col py-2">
+                <div class="fw-light text-muted">Phone number</div>
+                <div class="fw-bold">(+977) {{ profile.phone_number }}</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-header bg-secondary text-white fw-bold bg-opacity-50">Details</div>
+          <div class="card-body pt-3">
+            <div class="row mx-2">
+              <div class="col py-2">
+                <div class="fw-light text-muted">Nationality</div>
+                <div>lorem</div>
+              </div>
+              <div class="col py-2">
+                <div class="fw-light text-muted">Marital</div>
+                <div>{{ profile.get_marital_status_display }}</div>
+              </div>
+            </div>
+            <div class="row mx-2">
+              <div class="col py-2">
+                <div class="fw-light text-muted">Date of birth</div>
+                <div>{{ profile.date_of_birth }}</div>
+              </div>
+              <div class="col py-2">
+                <div class="fw-light text-muted">Gender</div>
+                <div>{{ profile.get_gender_display }}</div>
+              </div>
+            </div>
+            {% if user_role == 'student' %}
+            <div class="row mx-2">
+              <div class="col py-2">
+                <div class="fw-light text-muted">Guardian </div>
+                <div>{{ profile.student.guardian }}</div>
+              </div>
+              <div class="col py-2">
+                <div class="fw-light text-muted">Guardian Relation</div>
+                <div>{{ profile.student.get_guardian_relation_display }}</div>
+              </div>
+            </div>
+            {% endif %}
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-header bg-secondary text-white fw-bold bg-opacity-50">Correspondence Address</div>
+          <div class="card-body pt-3">
+            <div class="row mx-2">
+              <div class="col py-2">
+                <div class="fw-light text-muted">Address</div>
+                <div>{{ profile.address }}</div>
+              </div>
+              <div class="col py-2">
+                <div class="fw-light text-muted">Post Code</div>
+                <div>{{ profile.post_code }}</div>
+              </div>
+            </div>
+            <div class="row mx-2">
+              <div class="col py-2">
+                <div class="fw-light text-muted">State</div>
+                <div>{{ profile.get_state_display }}</div>
+              </div>
+              <div class="col py-2">
+                <div class="fw-light text-muted">City</div>
+                <div>{{ profile.city }}</div>
+              </div>
+            </div>
+            <div class="row mx-2">
+              <div class="col py-2">
+                <div class="fw-light text-muted">Country</div>
+                <div>{{ profile.country }}</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+</main>
+{% endblock content %}
