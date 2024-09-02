@@ -17,6 +17,7 @@
     <caption>{{ total_courses }} course{{ total_courses|pluralize }}</caption>
     <thead>
       <tr class="text-capitalize">
+        <th scope="col">#</th>
         <th scope="col">ID</th>
         <th scope="col">Code</th>
         <th scope="col">Name</th>
@@ -29,6 +30,7 @@
     <tbody>
       {% for course in courses %}
       <tr>
+        <th scope="row">{{ forloop.counter }}</th>
         <th scope="row">{{ course.id }}</th>
         <td>{{ course.code }}</td>
         <td>{{ course.name }}</td>
@@ -65,7 +67,7 @@
       </tr>
       {% empty %}
       <tr>
-        <td colspan="6" class="text-center py-4 text-muted fs-2">
+        <td colspan="8" class="text-center py-4 text-muted fs-2">
           No courses available.
         </td>
       </tr>

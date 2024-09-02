@@ -16,7 +16,13 @@ from users.mixins import (
 from users.models import Instructor, Student
 from courses.models import Enrollment
 
-from .forms import AcademicYearForm, DepartmentForm, ProgramForm, SemesterForm
+from .forms import (
+    AcademicYearForm,
+    DepartmentForm,
+    ProgramForm,
+    ProgramFilterForm,
+    SemesterForm,
+)
 from .models import AcademicYear, Department, Program, Semester
 
 
@@ -198,11 +204,29 @@ class ProgramListView(LoginRequiredMixin, AdminRequiredMixin, ListView):
     context_object_name = "programs"
     template_name = "academics/programs/program_list.html"
 
+    def get_queryset(self):
+        queryset = super().get_queryset()
+        form = ProgramFilterForm(self.request.GET)
+        if form.is_valid():
+            department = form.cleaned_data["department"]
+            degree_type = form.cleaned_data["degree_type"]
+            is_active = form.cleaned_data["is_active"]
+            if department:
+                queryset = queryset.filter(department=department)
+            if degree_type:
+                queryset = queryset.filter(degree_type=degree_type)
+            if is_active == "1":
+                queryset = queryset.filter(is_active=True)
+            elif is_active == "0":
+                queryset = queryset.filter(is_active=False)
+        return queryset
+
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         total_programs = self.get_queryset().count()
         context["total_programs"] = total_programs
         context["program_create_url"] = reverse_lazy("academics:program_create")
+        context["filter_form"] = ProgramFilterForm(self.request.GET)
         return context
 
 

@@ -5,6 +5,16 @@ from courses.models import Class
 from users.models import Student
 
 
+class AttendanceManager(models.Manager):
+    def get_queryset(self):
+        return (
+            super()
+            .get_queryset()
+            .order_by("-created_at")
+            .select_related("course_class", "student__profile__user")
+        )
+
+
 class Attendance(models.Model):
     class AttendanceStatus(models.TextChoices):
         PRESENT = "PRE", "Present"
@@ -21,6 +31,8 @@ class Attendance(models.Model):
     remarks = models.CharField(max_length=255, null=False, blank=True, default="")
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
+
+    objects = AttendanceManager()
 
     class Meta:
         constraints = [

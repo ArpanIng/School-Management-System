@@ -1,4 +1,4 @@
-from django.core.validators import MaxValueValidator
+from django.core.validators import MaxValueValidator, MinValueValidator
 from django.db import models
 from django.template.defaultfilters import slugify
 
@@ -116,7 +116,8 @@ class Program(models.Model):
         Department, on_delete=models.RESTRICT, related_name="programs"
     )
     duration_years = models.PositiveIntegerField(
-        help_text="Enter the number of years required to complete this program."
+        validators=[MinValueValidator(1), MaxValueValidator(6)],
+        help_text="Enter the number of years required to complete this program.",
     )
     degree_type = models.CharField(max_length=10, choices=DegreeType.choices)
     total_credits = models.PositiveIntegerField(validators=[MaxValueValidator(300)])

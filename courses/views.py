@@ -18,20 +18,9 @@ from .forms import (
     CourseForm,
     CourseFilterForm,
     EnrollmentForm,
-    TestForm,
 )
 from .filters import ClassFilter
 from .models import Class, Course, Enrollment
-
-
-class TestView(CreateView):
-    form_class = TestForm
-    template_name = "test.html"
-
-    def get_form_kwargs(self):
-        kwargs = super().get_form_kwargs()
-        kwargs["user"] = self.request.user
-        return kwargs
 
 
 class CourseListView(LoginRequiredMixin, AdminRequiredMixin, ListView):
@@ -46,14 +35,13 @@ class CourseListView(LoginRequiredMixin, AdminRequiredMixin, ListView):
         form = CourseFilterForm(self.request.GET)
         if form.is_valid():
             program = form.cleaned_data["program"]
+            is_active = form.cleaned_data["is_active"]
             if program:
-                print("------------------------------")
-                print(program)
-                # queryset = queryset.filter(program=program)
-        #     if is_active == "1":
-        #         queryset = queryset.filter(is_active=True)
-        #     elif is_active == "0":
-        #         queryset = queryset.filter(is_active=False)
+                queryset = queryset.filter(program=program)
+            if is_active == "1":
+                queryset = queryset.filter(is_active=True)
+            elif is_active == "0":
+                queryset = queryset.filter(is_active=False)
         return queryset
 
     def get_context_data(self, **kwargs):

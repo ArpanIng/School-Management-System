@@ -8,7 +8,6 @@ app_name = "courses"
 
 urlpatterns = [
     # course urls
-    path("tests/", views.TestView.as_view()),
     path("courses/", views.CourseListView.as_view(), name="course_list"),
     path("courses/add/", views.CourseCreateView.as_view(), name="course_create"),
     path(

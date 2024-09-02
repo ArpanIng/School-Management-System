@@ -11,7 +11,7 @@
             <h5 class="card-title">
               Add student
             </h5>
-            <form action="{% url 'student_create' %}" method="post"  enctype="multipart/form-data" novalidate>
+            <form action="{% url 'student_create' %}" method="post" class="row g-3" enctype="multipart/form-data" novalidate>
               {% csrf_token %}
               {% crispy registration_form %}
               {% crispy profile_form %}

@@ -1,31 +1,19 @@
 {% extends "table_layout.html" %}
 {% load status_extras %}
 
+{% block page_filters %}
+{% comment %} {{filter.form}} {% endcomment %}
+{% include 'partials/_filter_card.html' with filter_form=filter.form %}
+{% endblock page_filters %}
+
+
 {% block page_title %}Classes{% endblock page_title %}
 
-{% comment %} {% block table_actions %}
+{% block table_actions %}
 {% include 'table_actions.html' with add_url=class_create_url %}
-{% endblock table_actions %} {% endcomment %}
-
-
+{% endblock table_actions %}
 
 {% block table_content %}
-<div class="card-body">
-  <form method="get" class="row mb-4">
-    {% for field in filter.form %}
-    <div class="col-auto">
-      {{ field }}
-    </div>
-    {% endfor %}
-  <div class="col-auto">
-    <button type="submit" class="btn btn-primary">Filter</button>
-  </div>
-</form>
-</div>
-
-
-
-
 <div class="table-responsive">
   <table class="table table-striped caption-top">
     <caption>{{ total_classes }} class{{ total_classes|pluralize }}</caption>

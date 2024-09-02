@@ -1,7 +1,6 @@
 from django.contrib import messages
 from django.contrib.auth import get_user_model
 from django.contrib.auth.mixins import LoginRequiredMixin
-from django.contrib.postgres.search import SearchQuery, SearchRank, SearchVector
 from django.db import transaction
 from django.db.models import Q
 from django.shortcuts import get_object_or_404, redirect, render
@@ -44,10 +43,10 @@ class StudentListView(LoginRequiredMixin, AdminRequiredMixin, ListView):
 
         form = StudentFilterForm(self.request.GET)
         if form.is_valid():
-            state = form.cleaned_data.get("state")
-            marital_status = form.cleaned_data.get("marital_status")
-            gender = form.cleaned_data.get("gender")
-            status = form.cleaned_data.get("status")
+            state = form.cleaned_data["state"]
+            marital_status = form.cleaned_data["marital_status"]
+            gender = form.cleaned_data["gender"]
+            status = form.cleaned_data["status"]
             # apply filters query
             if state:
                 queryset = queryset.filter(profile__state=state)

@@ -4,7 +4,7 @@ from django.contrib.auth.forms import UserChangeForm, UserCreationForm
 from django.urls import reverse
 
 from crispy_forms.helper import FormHelper
-from crispy_forms.layout import Div, Layout, Submit
+from crispy_forms.layout import Div, Layout
 
 from academics.models import Department
 from .models import (
@@ -22,17 +22,15 @@ class RegistrationForm(UserCreationForm):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.helper = FormHelper()
+        self.helper.disable_csrf = True
         self.helper.form_tag = False
         self.helper.layout = Layout(
-            Div(
-                Div("first_name", css_class="col-md-6"),
-                Div("last_name", css_class="col-md-6"),
-                Div("username", css_class="col-md-6"),
-                Div("email", css_class="col-md-6"),
-                Div("password1", css_class="col-md-12"),
-                Div("password2", css_class="col-md-12"),
-                css_class="row g-3",
-            )
+            Div("first_name", css_class="col-md-6"),
+            Div("last_name", css_class="col-md-6"),
+            Div("username", css_class="col-md-6"),
+            Div("email", css_class="col-md-6"),
+            Div("password1", css_class="col-md-12"),
+            Div("password2", css_class="col-md-12"),
         )
         self.fields["password1"].help_text = None
 
@@ -109,21 +107,19 @@ class ProfileForm(forms.ModelForm):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.helper = FormHelper()
+        self.helper.disable_csrf = True
         self.helper.form_tag = False
         self.helper.layout = Layout(
-            Div(
-                Div("avatar", css_class="col-md-12"),
-                Div("gender", css_class="col-md-4"),
-                Div("date_of_birth", css_class="col-md-4"),
-                Div("marital_status", css_class="col-md-4"),
-                Div("phone_number", css_class="col-md-6"),
-                Div("address", css_class="col-md-6"),
-                Div("city", css_class="col-md-6"),
-                Div("state", css_class="col-md-2"),
-                Div("post_code", css_class="col-md-2"),
-                Div("country", css_class="col-md-2"),
-                css_class="row g-3",
-            )
+            Div("avatar", css_class="col-md-12"),
+            Div("gender", css_class="col-md-4"),
+            Div("date_of_birth", css_class="col-md-4"),
+            Div("marital_status", css_class="col-md-4"),
+            Div("phone_number", css_class="col-md-6"),
+            Div("address", css_class="col-md-6"),
+            Div("city", css_class="col-md-6"),
+            Div("state", css_class="col-md-2"),
+            Div("post_code", css_class="col-md-2"),
+            Div("country", css_class="col-md-2"),
         )
 
     class Meta:
@@ -152,18 +148,16 @@ class StudentForm(forms.ModelForm):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.helper = FormHelper()
+        self.helper.disable_csrf = True
         self.helper.form_tag = False
         self.helper.layout = Layout(
-            Div(
-                Div("student_id", css_class="col-md-12"),
-                Div("parent_contact", css_class="col-md-4"),
-                Div("guardian", css_class="col-md-4"),
-                Div("guardian_relation", css_class="col-md-4"),
-                Div("enrollment_date", css_class="col-md-4"),
-                Div("graduation_date", css_class="col-md-4"),
-                Div("status", css_class="col-md-4"),
-                css_class="row g-3",
-            )
+            Div("student_id", css_class="col-md-12"),
+            Div("parent_contact", css_class="col-md-4"),
+            Div("guardian", css_class="col-md-4"),
+            Div("guardian_relation", css_class="col-md-4"),
+            Div("enrollment_date", css_class="col-md-4"),
+            Div("graduation_date", css_class="col-md-4"),
+            Div("status", css_class="col-md-4"),
         )
 
     class Meta:
@@ -226,16 +220,14 @@ class InstructorForm(forms.ModelForm):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.helper = FormHelper()
+        self.helper.disable_csrf = True
         self.helper.form_tag = False
         self.helper.layout = Layout(
-            Div(
-                Div("employee_id", css_class="col-md-12"),
-                Div("qualification", css_class="col-md-6"),
-                Div("date_of_joining", css_class="col-md-6"),
-                Div("department", css_class="col-md-6"),
-                Div("status", css_class="col-md-6"),
-                css_class="row g-3",
-            )
+            Div("employee_id", css_class="col-md-12"),
+            Div("qualification", css_class="col-md-6"),
+            Div("date_of_joining", css_class="col-md-6"),
+            Div("department", css_class="col-md-6"),
+            Div("status", css_class="col-md-6"),
         )
 
     class Meta:

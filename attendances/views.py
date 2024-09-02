@@ -2,6 +2,7 @@ import calendar
 from datetime import datetime
 
 from django.contrib.auth.mixins import LoginRequiredMixin
+from django.db.models import Q
 from django.shortcuts import get_object_or_404, redirect, render
 from django.utils import timezone
 from django.views.generic.base import TemplateView, View
@@ -16,7 +17,33 @@ from .filters import AttendanceFilter
 from .models import Attendance
 
 
+class AttendanceListView(LoginRequiredMixin, AdminRequiredMixin, ListView):
+    """View to list all attendances of the system."""
+
+    model = Attendance
+    context_object_name = "attendances"
+    template_name = "attendances/attendance_list.html"
+
+    def get_queryset(self):
+        queryset = super().get_queryset()
+        query = self.request.GET.get("q")
+        if query:
+            queryset = queryset.filter(
+                Q(student__profile__user__first_name__icontains=query)
+                | Q(student__profile__user__last_name__icontains=query)
+            )
+        return queryset
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        total_attendances = self.get_queryset().count()
+        context["total_attendances"] = total_attendances
+        return context
+
+
 class ClassAttendanceListView(TemplateView):
+    """View to list attendance of a specific class."""
+
     template_name = "attendances/class_attendance_list.html"
 
     def get_context_data(self, **kwargs):
