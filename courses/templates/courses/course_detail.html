@@ -1,5 +1,4 @@
 {% extends "academics/base_admin.html" %}
-{% load group_extras %}
 
 {% block content %}
 <main id="main" class="main">
@@ -47,11 +46,8 @@
             <div class="mt-4">
               <div class="d-flex justify-content-between align-items-end border-bottom border-3">
                 <h2>
-                  {% if request.user|has_group:'Student' %}
                   Classmates
-                  {% else %}
                   Enrolled students
-                  {% endif %}
                 </h2>
                 {{is_enrolled}}
                 <p class="text-muted">{{ enrolled_students_count }} Student{{ enrolled_students_count|pluralize }}</p>

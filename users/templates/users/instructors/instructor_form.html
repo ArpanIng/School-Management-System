@@ -8,15 +8,27 @@
       <div class="col-lg-8">
         <div class="card">
           <div class="card-body">
-            <h5 class="card-title">Add Instructor</h5>
-            <form action="" method="post" novalidate>
+            <h5 class="card-title">
+              {% if profile_form.instance.pk %}Edit{% else %}Add{% endif %} Instructor
+            </h5>
+            <form
+              action=""
+              method="post"
+              class="row g-3"
+              enctype="multipart/form-data"
+              novalidate
+            >
               {% csrf_token %}
+              {% if profile_form.instance.pk %}
+              {% crispy user_form %}
+              {% else %}
               {% crispy registration_form %}
+              {% endif %}
               {% crispy profile_form %}
               {% crispy instructor_form %}
               <div>
                 <a href="{{ request.META.HTTP_REFERER }}" class="btn btn-secondary">Cancel</a>
-                <button type="submit" class="btn btn-primary">Add</button>
+                <button type="submit" class="btn btn-primary">Save</button>
               </div>
             </form>
           </div>

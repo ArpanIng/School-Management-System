@@ -19,4 +19,9 @@ student_urlpatterns = [
         student_views.StudentAcademicView.as_view(),
         name="student_academic_list",
     ),
+    path(
+        "enrolled/courses/",
+        student_views.StudentEnrolledCoruses.as_view(),
+        name="enrolled_courses",
+    ),
 ]

@@ -1,3 +1,4 @@
+from typing import Any, Dict
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.messages.views import SuccessMessageMixin
 from django.shortcuts import redirect
@@ -14,7 +15,7 @@ from users.mixins import (
     StudentRequiredMixin,
 )
 from users.models import Instructor, Student
-from courses.models import Enrollment
+from courses.models import Class, Enrollment
 
 from .forms import (
     AcademicYearForm,
@@ -24,66 +25,77 @@ from .forms import (
     SemesterForm,
 )
 from .models import AcademicYear, Department, Program, Semester
+from .utils import get_user_role_by_group
 
 
-class DashboardRouterView(LoginRequiredMixin, View):
-    def get(self, request, *args, **kwargs):
-        user = request.user
+class DashboardView(LoginRequiredMixin, TemplateView):
+    """
+    A view which displays data based on the user's group.
+    """
 
-        if user.groups.filter(name="Admin").exists():
-            return redirect(reverse("academics:admin_dashboard"))
-        elif user.groups.filter(name="Instructor").exists():
-            return redirect(reverse("academics:instructor_dashboard"))
-        elif user.groups.filter(name="Student").exists():
-            return redirect(reverse("academics:student_dashboard"))
-
-
-class AdminDashboardView(LoginRequiredMixin, AdminRequiredMixin, TemplateView):
-    template_name = "academics/dashboard_admin.html"
+    def get_template_names(self) -> list[str]:
+        user = self.request.user
+        user_role = get_user_role_by_group(user=user)
+        if user_role == "admin":
+            return ["academics/dashboard_admin.html"]
+        elif user_role == "instructor":
+            return ["academics/dashboard_instructor.html"]
+        elif user_role == "student":
+            return ["academics/dashboard_student.html"]
+        return super().get_template_names()
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
+        user = self.request.user
+        user_role = get_user_role_by_group(user=user)
+        if user_role == "admin":
+            context["dashboard_data"] = self.get_admin_dashboard_data()
+        elif user_role == "instructor":
+            context["dashboard_data"] = self.get_instructor_dashboard_data()
+        elif user_role == "student":
+            context["dashboard_data"] = self.get_student_dashboard_data()
+        return context
+
+    def get_admin_dashboard_data(self):
         # card data
         instructors_count = Instructor.objects.all().count()
         students_count = Student.objects.all().count()
         courses_count = Course.objects.all().count()
         departments_count = Department.objects.all().count()
         programs_count = Program.objects.all().count()
-        context["total_instructors"] = instructors_count
-        context["total_students"] = students_count
-        context["total_courses"] = courses_count
-        context["total_deparments"] = departments_count
-        context["total_programs"] = programs_count
-        context["total"] = Student.objects.total_students()
 
         # chart data
         user_type_list = ["Instructor", "Student"]
         user_type_list_number = [instructors_count, students_count]
-        context["user_type_list"] = user_type_list
-        context["user_type_list_number"] = user_type_list_number
-        return context
 
+        data = {
+            "total_instructors": instructors_count,
+            "total_students": students_count,
+            "total_courses": courses_count,
+            "total_deparments": departments_count,
+            "total_programs": programs_count,
+            "user_type_list": user_type_list,
+            "user_type_list_number": user_type_list_number,
+        }
+        return data
 
-class InstructorDashboardView(
-    LoginRequiredMixin, InstructorRequiredMixin, TemplateView
-):
-    template_name = "academics/dashboard_instructor.html"
+    def get_instructor_dashboard_data(self):
+        instructor = self.request.user.profile.instructor
+        assigned_classes_count = Class.objects.filter(
+            class_instructor=instructor
+        ).count()
+        data = {
+            "assigned_classes_count": assigned_classes_count,
+        }
+        return data
 
-
-class StudentDashboardView(LoginRequiredMixin, StudentRequiredMixin, TemplateView):
-    template_name = "academics/dashboard_student.html"
-
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
+    def get_student_dashboard_data(self):
         student = self.request.user.profile.student
-        enrolled_classes = student.get_enrolled_classes
-        enrolled = Enrollment.objects.filter(student=student)
-        context["student"] = student
-        context["enrolled"] = enrolled
-        context["enrolled_classes"] = enrolled_classes
-        info = {"class": "12 grade", "section": "A"}
-        context["class"] = info
-        return context
+        enrolled_classes_count = student.get_enrolled_classes().count()
+        data = {
+            "enrolled_classes_count": enrolled_classes_count,
+        }
+        return data
 
 
 class DepartmentListView(LoginRequiredMixin, AdminRequiredMixin, ListView):

@@ -1,58 +1,12 @@
-{% extends "base.html" %}
-
-{% block styles %}
-<style>
-  #logo:hover {
-    color: "yellow";
-  }
-</style>
-{% endblock styles %}
+{% extends "academics/base_dashboard.html" %}
 
 {% block sidebar %}
 {% include 'academics/partials/sidebar_student.html' %}
 {% endblock sidebar %}
 
-{% block content %}
-<main id="main" class="main">
-  <section class="section dashboard">
-    <div class="row">
-      <!-- Left side columns -->
-      <div class="col-lg-10">
-        <div class="row row-cols-1 row-cols-md-3 g-4">
-          {% for enrollment in enrolled_classes %}
-          <div class="col">
-            <div class="card h-100 border">
-              <div class="card-header bg-secondary">
-                <div>
-                  <a
-                    href="{{ enrollment.class_instance.get_absolute_url }}"
-                    class="fs-5 fw-semibold text-light"
-                    id="logo"
-                  >
-                    {{ enrollment.class_instance.course.code }}
-                    {{ enrollment.class_instance.course.name }}
-                    <p class="fs-6 fw-normal">
-                      {{ enrollment.class_instance.section }}
-                    </p>
-                  </a>
-                </div>
-              </div>
-              <div class="card-body">
-                <div class="my-4"></div>
-              </div>
-              <div class="card-footer">
-                <div class="d-flex justify-content-end">
-                  <a href="" class="text-muted">
-                    <i class="bi bi-person-badge"></i>
-                  </a>
-                </div>
-              </div>
-            </div>
-          </div>
-          {% endfor %}
-        </div>
-      </div>
-    </div>
-  </section>
-</main>
-{% endblock content %}
+{% block dashboard_page_title %}Student{% endblock dashboard_page_title %}
+
+{% block left_dashboard_content %}
+<!-- cards -->
+{% include 'academics/partials/student_cards.html' %}
+{% endblock left_dashboard_content %}

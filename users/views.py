@@ -16,6 +16,7 @@ from django.views.generic.detail import DetailView
 from django.views.generic.edit import CreateView, FormView, UpdateView
 from django.views.generic.list import ListView
 
+from academics.utils import get_user_role_by_group
 from .forms import ProfileForm, RegistrationForm, UserForm
 from .mixins import AdminRequiredMixin
 from .models import Profile
@@ -62,9 +63,21 @@ class CustomPasswordChangeView(LoginRequiredMixin, PasswordChangeView):
     success_url = reverse_lazy("password_change_done")
     template_name = "users/auth/password_change_form.html"
 
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        user = self.request.user
+        context["user_role"] = get_user_role_by_group(user=user)
+        return context
+
 
 class CustomPasswordChangeDoneView(LoginRequiredMixin, PasswordChangeDoneView):
     template_name = "users/auth/password_change_done.html"
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        user = self.request.user
+        context["user_role"] = get_user_role_by_group(user=user)
+        return context
 
 
 class UserListView(LoginRequiredMixin, AdminRequiredMixin, ListView):
@@ -122,20 +135,8 @@ class ProfileView(LoginRequiredMixin, DetailView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        user_role = None
         user = self.request.user
-
-        # returns ListQuerySet of user's groups
-        groups = user.groups.values_list("name", flat=True)
-
-        if "Admin" in groups:
-            user_role = "admin"
-        elif "Instructor" in groups:
-            user_role = "instructor"
-        elif "Student" in groups:
-            user_role = "student"
-
-        context["user_role"] = user_role
+        context["user_role"] = get_user_role_by_group(user=user)
         return context
 
 

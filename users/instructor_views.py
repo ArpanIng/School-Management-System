@@ -70,7 +70,7 @@ class InstructorListView(LoginRequiredMixin, AdminRequiredMixin, ListView):
 
 
 class InstructorCreateView(LoginRequiredMixin, AdminRequiredMixin, View):
-    template_name = "users/instructors/instructor_create_form.html"
+    template_name = "users/instructors/instructor_form.html"
 
     def get(self, request, *args, **kwargs):
         registration_form = RegistrationForm()
@@ -124,7 +124,7 @@ class InstructorCreateView(LoginRequiredMixin, AdminRequiredMixin, View):
 
 
 class InstructorUpdateView(LoginRequiredMixin, AdminRequiredMixin, View):
-    template_name = "users/instructors/instructor_update_form.html"
+    template_name = "users/instructors/instructor_form.html"
 
     def get(self, request, *args, **kwargs):
         instructor_id = kwargs.get("instructor_id")

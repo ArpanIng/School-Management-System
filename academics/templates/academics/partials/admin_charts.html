@@ -10,10 +10,10 @@
           new Chart(document.querySelector('#pieChart'), {
             type: 'pie',
             data: {
-              labels: [{% for user in user_type_list %} '{{ user }}', {% endfor %}],
+              labels: [{% for user in dashboard_data.user_type_list %} '{{ user }}', {% endfor %}],
               datasets: [{
                 label: 'Dataset',
-                data: [{% for data in user_type_list_number %}'{{ data }}', {% endfor %}],
+                data: [{% for data in dashboard_data.user_type_list_number %}'{{ data }}', {% endfor %}],
                 backgroundColor: [
                   'rgb(255, 99, 132)',
                   'rgb(54, 162, 235)',

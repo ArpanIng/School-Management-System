@@ -1,6 +1,7 @@
 from django.conf import settings
 from django.conf.urls.static import static
 from django.contrib import admin
+from django.views.generic import RedirectView
 from django.urls import include, path
 
 handler403 = "users.error_handlers.handler403"
@@ -12,6 +13,7 @@ urlpatterns = [
     path("", include("academics.urls", namespace="academics")),
     path("", include("courses.urls")),
     path("", include("users.urls")),
+    path("", RedirectView.as_view(permanent=False, url="dashboard/")),
     path("attendances/", include("attendances.urls", namespace="attendances")),
 ]
 

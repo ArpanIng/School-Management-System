@@ -1,0 +1,33 @@
+{% extends "base.html" %}
+
+{% block sidebar %}
+{% endblock sidebar %}
+
+{% block content %}
+<main id="main" class="main">
+  <div class="pagetitle">
+    <h1>
+      {% block dashboard_page_title %}{% endblock dashboard_page_title %} Dashboard
+    </h1>
+  </div>
+
+  <section class="section dashboard">
+    <div class="row">
+      <!-- Left side columns -->
+      <div class="col-lg-8">
+        <div class="row">
+          {% block left_dashboard_content %}{% endblock left_dashboard_content %}
+        </div>
+      </div><!-- End Left side columns -->
+
+      <!-- Right side columns -->
+      <div class="col-lg-4">
+        <!-- Recent Activity -->
+        {% include 'academics/partials/_recent_activity.html' %}
+        <!-- News & Updates Traffic -->
+        {% include 'academics/partials/_news_updates.html' %}
+      </div><!-- End Right side columns -->
+    </div>
+  </section>
+</main>
+{% endblock content %}

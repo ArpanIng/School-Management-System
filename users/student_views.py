@@ -1,3 +1,4 @@
+from typing import Any, Dict
 from django.contrib import messages
 from django.contrib.auth import get_user_model
 from django.contrib.auth.mixins import LoginRequiredMixin
@@ -9,6 +10,7 @@ from django.views.generic import View
 from django.views.generic.base import TemplateView
 from django.views.generic.list import ListView
 
+from courses.models import Enrollment
 from .forms import (
     MyUserChangeForm,
     ProfileForm,
@@ -16,7 +18,7 @@ from .forms import (
     StudentForm,
     StudentFilterForm,
 )
-from .mixins import AdminRequiredMixin
+from .mixins import AdminRequiredMixin, StudentRequiredMixin
 from .models import Student
 
 User = get_user_model()
@@ -68,7 +70,7 @@ class StudentListView(LoginRequiredMixin, AdminRequiredMixin, ListView):
 
 
 class StudentCreateView(LoginRequiredMixin, AdminRequiredMixin, View):
-    template_name = "users/students/student_create_form.html"
+    template_name = "users/students/student_form.html"
 
     def get(self, request, *args, **kwargs):
         registration_form = RegistrationForm()
@@ -122,7 +124,7 @@ class StudentCreateView(LoginRequiredMixin, AdminRequiredMixin, View):
 
 
 class StudentUpdateView(LoginRequiredMixin, AdminRequiredMixin, View):
-    template_name = "users/students/student_update_form.html"
+    template_name = "users/students/student_form.html"
 
     def get(self, request, *args, **kwargs):
         student_id = kwargs.get("student_id")
@@ -177,6 +179,19 @@ class StudentUpdateView(LoginRequiredMixin, AdminRequiredMixin, View):
             "student_form": student_form,
         }
         return render(request, self.template_name, context)
+
+
+class StudentEnrolledCoruses(LoginRequiredMixin, StudentRequiredMixin, TemplateView):
+    template_name = "users/students/enrolled_courses.html"
+
+    def get_context_data(self, **kwargs: Any):
+        context = super().get_context_data(**kwargs)
+        student = self.request.user.profile.student
+        enrolled_classes = student.get_enrolled_classes().select_related(
+            "class_instance__course"
+        )
+        context["enrolled_classes"] = enrolled_classes
+        return context
 
 
 class StudentAcademicView(LoginRequiredMixin, TemplateView):

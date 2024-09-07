@@ -57,12 +57,5 @@ urlpatterns = [
         views.ProgramDeleteView.as_view(),
         name="program_delete",
     ),
-    path("", views.DashboardRouterView.as_view(), name="dashboard_router"),
-    path("dashboard/", views.AdminDashboardView.as_view(), name="admin_dashboard"),
-    path(
-        "dashboard/",
-        views.InstructorDashboardView.as_view(),
-        name="instructor_dashboard",
-    ),
-    path("home/", views.StudentDashboardView.as_view(), name="student_dashboard"),
+    path("dashboard/", views.DashboardView.as_view(), name="dashboard"),
 ]

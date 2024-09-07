@@ -12,6 +12,8 @@ from users.mixins import AdminRequiredMixin
 
 from django_filters.views import FilterView
 
+from academics.utils import get_user_role_by_group
+
 from .forms import (
     ClassForm,
     ClassInstructorAssignForm,
@@ -204,11 +206,13 @@ class ClassDetailView(LoginRequiredMixin, DetailView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
+        user = self.request.user
         class_obj = self.object
         enrolled_students = class_obj.get_enrolled_students()
         enrolled_students_count = enrolled_students.count()
         context["enrolled_students"] = enrolled_students
         context["enrolled_students_count"] = enrolled_students_count
+        context["user_role"] = get_user_role_by_group(user=user)
         return context
 
 

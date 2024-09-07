@@ -1,19 +1,25 @@
 <aside id="sidebar" class="sidebar">
   <ul class="sidebar-nav" id="sidebar-nav">
     <li class="nav-item">
-      <a class="nav-link collapsed" href="#">
+      <a class="nav-link collapsed" href="{% url 'academics:dashboard' %}">
         <span>Homepage</span>
       </a>
     </li>
     <li class="nav-item">
+      <a class="nav-link collapsed" href="{% url 'enrolled_courses' %}">
+        <i class="bi bi-journal"></i>
+        <span>Enrolled courses</span>
+      </a>
+    </li>
+    <li class="nav-item">
       <a class="nav-link collapsed" href="{% url 'student_academic_list' %}">
-        <i class="bi bi-files"></i>
+        <i class="bi bi-mortarboard"></i>
         <span>Academic</span>
       </a>
     </li>
     <li class="nav-item">
       <a class="nav-link collapsed" href="users-profile.html">
-        <i class="bi bi-person"></i>
+        <i class="bi bi-bank"></i>
         <span>Financial Statement</span>
       </a>
     </li>
