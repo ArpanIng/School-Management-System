@@ -1,6 +1,8 @@
 {% extends "table_layout.html" %}
 {% load status_extras %}
 
+{% block head_title %}Classes{% endblock head_title %}
+
 {% block page_filters %}
 {% comment %} {{filter.form}} {% endcomment %}
 {% include 'partials/_filter_card.html' with filter_form=filter.form %}

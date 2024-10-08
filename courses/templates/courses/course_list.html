@@ -1,6 +1,8 @@
 {% extends "table_layout.html" %}
 {% load status_extras %}
 
+{% block head_title %}Courses{% endblock head_title %}
+
 {% block page_filters %}
 {% include 'partials/_filter_card.html' with filter_form=filter_form %}
 {% endblock page_filters %}
@@ -77,6 +79,3 @@
 </div>
 {% endblock table_content %}
 
-{% comment %} {% block scripts %} {% endcomment %}
-{% comment %} <script src="{% static 'courses/js/test.js' %}"></script> {% endcomment %}
-{% comment %} {% endblock scripts %} {% endcomment %}

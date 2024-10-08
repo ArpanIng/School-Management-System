@@ -1,0 +1,77 @@
+{% extends "table_layout.html" %}
+{% load status_extras %}
+
+{% block head_title %}Assessments{% endblock head_title %}
+
+{% comment %} {% block page_filters %}
+{% include 'partials/_filter_card.html' with filter_form=filter_form %}
+{% endblock page_filters %} {% endcomment %}
+
+{% block page_title %}Assessments{% endblock page_title %}
+
+{% block table_actions %}
+{% include 'table_actions.html' with add_url=assessment_create_url %}
+{% endblock table_actions %}
+
+{% block table_content %}
+<div class="table-responsive">
+  <table class="table table-striped caption-top">
+    <caption>{{ total_assessments }} assessment{{ total_assessments|pluralize }}</caption>
+    <thead>
+      <tr class="text-capitalize">
+        <th scope="col">#</th>
+        <th scope="col">ID</th>
+        <th scope="col">Title</th>
+        <th scope="col">Course</th>
+        <th scope="col">Associated class</th>
+        <th scope="col">Type</th>
+        <th scope="col">Weightage</th>
+        <th scope="col">Mark</th>
+        <th scope="col">Due date</th>
+        <th scope="col">Is mandatory</th>
+        <th scope="col">Is published</th>
+        <th scope="col"></th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for assessment in assessments %}
+      <tr>
+        <th scope="row">{{ forloop.counter }}</th>
+        <th scope="row">{{ assessment.id }}</th>
+        <td>{{ assessment.title }}</td>
+        <td>{{ assessment.course }}</td>
+        <td>{{ assessment.associated_class }}</td>
+        <td>{{ assessment.get_type_display }}</td>
+        <td>{{ assessment.weightage }}</td>
+        <td>{{ assessment.mark }}</td>
+        <td>{{ assessment.due_date }}</td>
+        <td>{% status_icon assessment.is_mandatory %}</td>
+        <td>{% status_icon assessment.is_published %}</td>
+        <td class="py-1">
+          <div class="d-flex justify-content-end">
+            <a
+              class="btn btn-secondary me-2"
+              href=""
+            >
+              <i class="bi bi-eye"></i>
+            </a>
+            <a
+              href="{% url 'courses:assessment_update' assessment.pk %}"
+              class="btn btn-primary me-2"
+            >
+              <i class="bi bi-pencil-square"></i>
+            </a>
+          </div>
+        </td>
+      </tr>
+      {% empty %}
+      <tr>
+        <td colspan="12" class="text-center py-4 text-muted fs-2">
+          No assessment available.
+        </td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
+{% endblock table_content %}

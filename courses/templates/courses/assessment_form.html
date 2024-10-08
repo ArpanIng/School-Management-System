@@ -1,9 +1,7 @@
 {% extends "academics/base_admin.html" %}
 {% load crispy_forms_tags %}
 
-{% block head_title %}
-{% if form.instance.pk %}Edit{% else %}Add{% endif %} enrollment
-{% endblock head_title %}
+{% block head_title %}Assessment{% endblock head_title %}
 
 {% block content %}
 <main id="main" class="main">
@@ -13,11 +11,10 @@
         <div class="card">
           <div class="card-body">
             <h5 class="card-title">
-            {% if form.instance.pk %}Edit{% else %}Add{% endif %}  enrollment
+              {% if form.instance.pk %}Edit{% else %}Add{% endif %} assessment
             </h5>
             <form action="" method="post" class="row g-3" novalidate>
-              {% csrf_token %}
-              {{form|crispy }}
+              {% csrf_token %} {{form|crispy }}
               <div>
                 <a href="{{ request.META.HTTP_REFERER }}" class="btn btn-secondary">Cancel</a>
                 <button type="submit" class="btn btn-primary">Save</button>

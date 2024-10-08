@@ -1,6 +1,10 @@
 {% extends "academics/base_admin.html" %}
 {% load crispy_forms_tags %}
 
+{% block head_title %}
+{% if form.instance.pk %}Edit{% else %}Add{% endif %} program
+{% endblock head_title %}
+
 {% block content %}
 <main id="main" class="main">
   <section class="section">
